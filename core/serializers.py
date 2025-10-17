@@ -12,9 +12,9 @@ class BookSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class LibrarySerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
-    book = BookSerializer(read_only=True)
+    owner = serializers.ReadOnlyField(source='owner.username')
+    books = BookSerializer(many=True, read_only=True)
 
     class Meta:
         model = Library
-        fields = '__all__'
+        fields = ['id', 'owner', 'books']

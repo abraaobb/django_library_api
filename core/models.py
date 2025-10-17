@@ -17,13 +17,8 @@ class Book(models.Model):
         return self.title
 
 class Library(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='borrowed_books')
-    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='borrowed_by')
-    borrowed_at = models.DateTimeField(auto_now_add=True)
-    returned_at = models.DateTimeField(null=True, blank=True)
-
-    class Meta:
-        unique_together = ('user', 'book', 'returned_at')
+    owner = models.OneToOneField(User, on_delete=models.CASCADE)
+    books = models.ManyToManyField(Book, related_name='libraries')
 
     def __str__(self):
-        return f"{self.user.username} → {self.book.title}"
+        return f"Biblioteca de {self.owner.username}"
