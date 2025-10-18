@@ -36,3 +36,5 @@ static/
 tmp/
 temp/
 *.tmp
+
+*.sqlite3
