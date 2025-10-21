@@ -11,7 +11,6 @@ class BookViewSet(viewsets.ModelViewSet):
     serializer_class = BookSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-
 class LibraryViewSet(viewsets.ModelViewSet):
     queryset = Library.objects.all()
     serializer_class = LibrarySerializer

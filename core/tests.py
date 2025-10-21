@@ -4,7 +4,7 @@ from rest_framework.test import APIClient
 from rest_framework import status
 from .models import Book, Library
 from .actions import Calculadora
-
+import unittest
 
 User = get_user_model()
 
@@ -86,3 +86,30 @@ class TestCalculadora(TestCase):
     def test_dividir_por_zero(self):
         with self.assertRaises(ValueError):
             self.calc.dividir(10, 0)
+
+class CalculadoraAvancadaTest(unittest.TestCase):
+    """Classe de testes unitários para a Calculadora."""
+
+    def setUp(self):
+        """Executado antes de cada teste: cria uma instância da Calculadora."""
+        self.calc = Calculadora()
+
+    def test_potencia(self):
+        """Verifica se a potência é calculada corretamente."""
+        resultado = self.calc.potencia(2, 3)
+        self.assertEqual(resultado, 8)
+
+    def test_raiz_quadrada(self):
+        """Verifica se a raiz quadrada de um número positivo é correta."""
+        resultado = self.calc.raiz_quadrada(9)
+        self.assertEqual(resultado, 3.0)
+
+    def test_raiz_quadrada_negativo(self):
+        """Verifica se ocorre erro ao calcular raiz quadrada de número negativo."""
+        with self.assertRaises(ValueError):
+            self.calc.raiz_quadrada(-4)
+
+
+if __name__ == "__main__":
+    # Executa todos os testes da classe
+    unittest.main()
