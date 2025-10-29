@@ -1,3 +1,6 @@
+import math
+
+
 class Calculadora:
     def somar(self, a: int, b: int) -> int:
         return a + b
@@ -22,8 +25,10 @@ class Calculadora:
     def raiz_quadrada(self, numero: float) -> float:
         """Calcula a raiz quadrada de um número positivo."""
         if numero < 0:
-            raise ValueError("Não é possível calcular raiz quadrada de número negativo.")
+            raise ValueError(
+                "Não é possível calcular raiz quadrada de número negativo.")
         return math.sqrt(numero)
+
 
 class ConversorTemperatura:
     """Classe responsável pela conversão de temperaturas entre Celsius e Fahrenheit."""
