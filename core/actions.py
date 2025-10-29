@@ -17,6 +17,7 @@ class Calculadora:
         return a / b
 
         # NOVA FUNÇÃO 1
+
     def potencia(self, base: int, expoente: int) -> float:
         """Calcula a potência (base elevado ao expoente)."""
         return math.pow(base, expoente)
