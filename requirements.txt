@@ -1,7 +1,12 @@
 asgiref==3.10.0
-coverage==7.11.0
+cffi==2.0.0
 Django==5.2.7
+django-filter==25.2
 djangorestframework==3.16.1
 djangorestframework_simplejwt==5.5.1
+Markdown==3.9
+numpy==2.3.3
+pycparser==2.23
 PyJWT==2.10.1
+sounddevice==0.5.2
 sqlparse==0.5.3
