@@ -3,20 +3,23 @@ from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
 from rest_framework import status
 from .models import Book, Library
-from .actions import Calculadora
+from core import actions
 import unittest
 
 User = get_user_model()
 
+
 class UserModelTest(TestCase):
     def test_create_user(self):
-        user = User.objects.create_user(username='testuser', email='test@example.com', password='12345')
+        user = User.objects.create_user(
+            username='testuser', email='test@example.com', password='12345')
         self.assertEqual(user.username, 'testuser')
         self.assertFalse(user.is_librarian)
         self.assertTrue(user.check_password('12345'))
 
     def test_create_librarian(self):
-        librarian = User.objects.create_user(username='libuser', email='lib@example.com', password='12345', is_librarian=True)
+        librarian = User.objects.create_user(
+            username='libuser', email='lib@example.com', password='12345', is_librarian=True)
         self.assertTrue(librarian.is_librarian)
 
 
@@ -38,9 +41,12 @@ class BookModelTest(TestCase):
 
 class LibraryModelTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username='owner', email='owner@example.com', password='12345')
-        self.book1 = Book.objects.create(title='Book 1', author='Author A', published_year=2022)
-        self.book2 = Book.objects.create(title='Book 2', author='Author B', published_year=2021)
+        self.user = User.objects.create_user(
+            username='owner', email='owner@example.com', password='12345')
+        self.book1 = Book.objects.create(
+            title='Book 1', author='Author A', published_year=2022)
+        self.book2 = Book.objects.create(
+            title='Book 2', author='Author B', published_year=2021)
         self.library = Library.objects.create(owner=self.user)
         self.library.books.set([self.book1, self.book2])
 
@@ -54,9 +60,11 @@ class LibraryModelTest(TestCase):
 class LibraryAPITest(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.user = User.objects.create_user(username='apiuser', email='api@example.com', password='12345')
+        self.user = User.objects.create_user(
+            username='apiuser', email='api@example.com', password='12345')
         self.library = Library.objects.create(owner=self.user)
-        self.book = Book.objects.create(title='Book API', author='API Author', published_year=2024)
+        self.book = Book.objects.create(
+            title='Book API', author='API Author', published_year=2024)
         self.library.books.add(self.book)
 
         self.client.force_authenticate(user=self.user)
@@ -69,7 +77,7 @@ class LibraryAPITest(TestCase):
 class TestCalculadora(TestCase):
 
     def setUp(self):
-        self.calc = Calculadora()
+        self.calc = actions.Calculadora()
 
     def test_somar(self):
         self.assertEqual(self.calc.somar(2, 3), 5)
@@ -87,12 +95,13 @@ class TestCalculadora(TestCase):
         with self.assertRaises(ValueError):
             self.calc.dividir(10, 0)
 
+
 class CalculadoraAvancadaTest(unittest.TestCase):
     """Classe de testes unitários para a Calculadora."""
 
     def setUp(self):
         """Executado antes de cada teste: cria uma instância da Calculadora."""
-        self.calc = Calculadora()
+        self.calc = actions.Calculadora()
 
     def test_potencia(self):
         """Verifica se a potência é calculada corretamente."""
@@ -108,6 +117,33 @@ class CalculadoraAvancadaTest(unittest.TestCase):
         """Verifica se ocorre erro ao calcular raiz quadrada de número negativo."""
         with self.assertRaises(ValueError):
             self.calc.raiz_quadrada(-4)
+
+
+class TestAtividade9(TestCase):
+    """Testes para a classe Atividade9 definida em core.actions."""
+
+    def setUp(self):
+        self.atividade = actions.Atividade9()
+
+    def test_is_pair_even(self):
+        """Números pares devem retornar True."""
+        self.assertTrue(self.atividade.is_pair(4))
+        self.assertTrue(self.atividade.is_pair(0))
+
+    def test_is_pair_odd(self):
+        """Números ímpares devem retornar False."""
+        self.assertFalse(self.atividade.is_pair(7))
+        self.assertFalse(self.atividade.is_pair(-3))
+
+    def test_get_average_normal(self):
+        """Média de lista de números é calculada corretamente."""
+        self.assertAlmostEqual(self.atividade.get_average([1, 2, 3, 4]), 2.5)
+        self.assertAlmostEqual(self.atividade.get_average([1.5, 2.5]), 2.0)
+
+    def test_get_average_empty_raises(self):
+        """Chamar get_average com lista vazia levanta ValueError."""
+        with self.assertRaises(ValueError):
+            self.atividade.get_average([])
 
 
 if __name__ == "__main__":

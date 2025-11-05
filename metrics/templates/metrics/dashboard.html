@@ -1,0 +1,73 @@
+{% load static %}
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Test Metrics Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 2rem
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            padding: 1rem;
+            margin-bottom: 1rem
+        }
+
+        .grid {
+            display: flex;
+            gap: 1rem
+        }
+
+        .grid .card {
+            flex: 1
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Test Metrics Dashboard</h1>
+    {% if metrics %}
+    <div class="grid">
+        <div class="card">
+            <h3>Última execução</h3>
+            <p>Cobertura: {{ metrics.0.coverage_percent }}%</p>
+            <p>Tests: {{ metrics.0.total_tests }}</p>
+            <p>Failures: {{ metrics.0.failures }} Errors: {{ metrics.0.errors }}</p>
+            <p>Duration: {{ metrics.0.duration }}s</p>
+        </div>
+        <div class="card">
+            <canvas id="coverageChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        const labels = [{% for m in metrics reversed %}'{{ m.created|date:"Y-m-d H:i" }}'{% if not forloop.last %}, {% endif %} {% endfor %}];
+        const data = [{% for m in metrics reversed %}{ { m.coverage_percent |default: "null" } } {% if not forloop.last %}, {% endif %} {% endfor %}];
+
+        const ctx = document.getElementById('coverageChart');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Coverage %',
+                    data: data,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    tension: 0.2
+                }]
+            },
+            options: { scales: { y: { beginAtZero: true, max: 100 } } }
+        });
+    </script>
+    {% else %}
+    <p>No metrics found. Run <code>python manage.py collect_metrics</code> to populate data.</p>
+    {% endif %}
+</body>
+
+</html>

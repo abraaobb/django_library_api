@@ -22,7 +22,6 @@ class Calculadora:
         """Calcula a potência (base elevado ao expoente)."""
         return math.pow(base, expoente)
 
-    # NOVA FUNÇÃO 2
     def raiz_quadrada(self, numero: float) -> float:
         """Calcula a raiz quadrada de um número positivo."""
         if numero < 0:
@@ -47,3 +46,15 @@ class ConversorTemperatura:
         Fórmula: C = (F - 32) * 5/9
         """
         return (f - 32) * 5 / 9
+
+
+class Atividade9:
+    def is_pair(self, numero: int) -> bool:
+        """Verifica se um número é par."""
+        return numero % 2 == 0
+
+    def get_average(self, numeros: list) -> float:
+        """Calcula a média de uma lista de números."""
+        if not numeros:
+            raise ValueError("A lista de números não pode estar vazia.")
+        return sum(numeros) / len(numeros)
